@@ -11,7 +11,7 @@ import (
 func newRenewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "renew [name]",
-		Short: "Renew Docker certificate",
+		Short: "Renew Docker client certificate",
 		Long:  renewDescription,
 		Run:   runRenew,
 	}
@@ -29,6 +29,6 @@ func runRenew(cmd *cobra.Command, args []string) {
 }
 
 var renewDescription = `
-Renew Docker certificate
+Renew Docker client certificate
 
 `

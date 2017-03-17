@@ -17,7 +17,7 @@ func newListCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "ls",
 		Aliases: []string{"list"},
-		Short:   "List Docker certificates",
+		Short:   "List Docker client certificates",
 		Long:    listDescription,
 		Run:     runList,
 	}
@@ -31,8 +31,9 @@ func runList(cmd *cobra.Command, args []string) {
 		os.Exit(-1)
 	}
 
-	config, err := adf.New()
-	if err != nil {
+	config := adf.New("client")
+
+	if err := config.Init(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -51,7 +52,9 @@ func runList(cmd *cobra.Command, args []string) {
 		for _, c := range certs {
 			var expire string
 
-			cf, err := config.CertFilesName(c.Name)
+			config.SetName(c.Name)
+
+			cf, err := config.CertFilesName()
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -69,6 +72,6 @@ func runList(cmd *cobra.Command, args []string) {
 }
 
 var listDescription = `
-List Docker certificates
+List Docker client certificates
 
 `

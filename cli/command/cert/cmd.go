@@ -7,7 +7,7 @@ import (
 func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "cert",
-		Short: "Manage Docker certificates",
+		Short: "Manage Docker client certificates",
 		Long:  certDescription,
 		Run: func(cmd *cobra.Command, args []string) {
 			cmd.Usage()
@@ -25,7 +25,7 @@ func NewCommand() *cobra.Command {
 }
 
 var certDescription = `
-The **twic cert** command has subcommands for managing Docker certificates.
+The **twic cert** command has subcommands for managing Docker client certificates.
 
 To see help for a subcommand, use:
 

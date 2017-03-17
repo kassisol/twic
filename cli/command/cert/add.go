@@ -2,7 +2,6 @@ package cert
 
 import (
 	"os"
-	"strings"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/juliengk/go-cert/helpers"
@@ -13,6 +12,7 @@ import (
 	"github.com/juliengk/go-utils/validation"
 	"github.com/kassisol/tsa/client"
 	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/twic/pkg/cert"
 	"github.com/kassisol/twic/storage"
 	"github.com/kassisol/twic/storage/driver"
 	"github.com/spf13/cobra"
@@ -24,6 +24,7 @@ var (
 	certAltNames string
 
 	tsaURL      string
+	tsaToken    string
 	tsaUsername string
 	tsaPassword string
 )
@@ -31,58 +32,36 @@ var (
 func newAddCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add [name]",
-		Short: "Add Docker certificate",
+		Short: "Add Docker client certificate",
 		Long:  addDescription,
 		Run:   runAdd,
 	}
 
 	flags := cmd.Flags()
-	flags.StringVarP(&certType, "type", "t", "client", "Certificate type")
-	flags.StringVarP(&certCN, "common-name", "n", "", "Certificate Common Name")
-	flags.StringVarP(&certAltNames, "alt-names", "a", "", "Certificate Alternative Names")
 
 	flags.StringVarP(&tsaURL, "tsa-url", "c", "", "TSA URL")
+	flags.StringVarP(&tsaToken, "token", "t", "", "Token")
 	flags.StringVarP(&tsaUsername, "username", "u", "", "Username")
 	flags.StringVarP(&tsaPassword, "password", "p", "", "Password")
 
 	return cmd
 }
 
-func getOU(ou string) string {
-	words := []string{
-		"Certificate",
-		"Authority",
-	}
-
-	oldou := strings.Split(ou, " ")
-
-	if len(oldou) > 1 {
-		newou := []string{}
-
-		for _, word := range oldou {
-			if !utils.StringInSlice(word, words, true) {
-				newou = append(newou, word)
-			}
-		}
-
-		if len(newou) > 0 {
-			return strings.Join(newou, " ")
-		}
-	}
-
-	return ou
-}
-
 func runAdd(cmd *cobra.Command, args []string) {
-	var certtype string
-	var certcn string
-	var certaltnames string
-
 	var tsaurl string
 	var username string
 	var password string
 
 	go utils.RecoverFunc()
+
+	user, err := user.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if user.IsRoot() {
+		log.Fatal("You must not be root to add a client certificate type")
+	}
 
 	if len(args) < 1 || len(args) > 1 {
 		cmd.Usage()
@@ -91,25 +70,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 
 	name := args[0]
 
-	if len(certType) <= 0 {
-		certtype = readinput.ReadInput("Type")
-	} else {
-		certtype = certType
-	}
-
-	if certtype == "engine" {
-		if len(certCN) <= 0 {
-			certcn = readinput.ReadInput("Common Name (CN)")
-		} else {
-			certcn = certCN
-		}
-
-		if len(certAltNames) <= 0 {
-			certaltnames = readinput.ReadInput("Alt Names")
-		} else {
-			certaltnames = certAltNames
-		}
-	}
+	certtype := "client"
 
 	if len(tsaURL) <= 0 {
 		tsaurl = readinput.ReadInput("TSA URL")
@@ -123,20 +84,23 @@ func runAdd(cmd *cobra.Command, args []string) {
 		username = tsaUsername
 	}
 
-	if len(tsaPassword) <= 0 {
-		password = readinput.ReadPassword("Password")
-	} else {
-		password = tsaPassword
+	if len(tsaToken) == 0 {
+		if len(tsaPassword) <= 0 {
+			password = readinput.ReadPassword("Password")
+		} else {
+			password = tsaPassword
+		}
 	}
 
-	if certtype == "client" {
-		certcn = username
-	}
+	certcn := username
 
-	config, err := adf.New()
-	if err != nil {
+	config := adf.New("client")
+
+	if err = config.Init(); err != nil {
 		log.Fatal(err)
 	}
+
+	config.SetName(name)
 
 	// DB
 	s, err := storage.NewDriver("sqlite", config.DBFileName())
@@ -156,34 +120,20 @@ func runAdd(cmd *cobra.Command, args []string) {
 		log.Fatal("Name, ", name, ", already exists")
 	}
 
-	// IV - type
-	if certtype != "engine" && certtype != "client" {
-		log.Fatal("Type is not correct")
-	}
-
-	if certtype == "engine" {
-		user, err := user.New()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if !user.IsRoot() {
-			log.Fatal("You must be root to add an engine certificate type")
-		}
-	}
-
 	// IV - Username
 	if len(username) <= 0 {
 		log.Fatal("Empty username is not allowed")
 	}
 
-	// IV - Password
-	if len(password) <= 0 {
-		log.Fatal("Empty password is not allowed")
+	if len(tsaToken) == 0 {
+		// IV - Password
+		if len(password) <= 0 {
+			log.Fatal("Empty password is not allowed")
+		}
 	}
 
 	// Create cert name directory
-	cf, err := config.CertFilesName(name)
+	cf, err := config.CertFilesName()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -200,9 +150,12 @@ func runAdd(cmd *cobra.Command, args []string) {
 	}
 
 	// Authz
-	token, err := clt.GetToken(username, password)
-	if err != nil {
-		log.Fatal(err)
+	token := tsaToken
+	if len(tsaToken) == 0 {
+		token, err = clt.GetToken(username, password, 0)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	// Get CA public Key
@@ -231,9 +184,9 @@ func runAdd(cmd *cobra.Command, args []string) {
 	}
 
 	ca := caCertificate.Crt.Subject
-	ou := getOU(ca.OrganizationalUnit[0])
+	ou := cert.GetOU(ca.OrganizationalUnit[0])
 
-	ans := utils.CreateSlice(certaltnames, ",")
+	ans := []string{}
 
 	csr, err := helpers.CreateCSR(ca.Country[0], ca.Province[0], ca.Locality[0], ca.Organization[0], ou, certcn, "", ans, key)
 	if err != nil {
@@ -257,10 +210,10 @@ func runAdd(cmd *cobra.Command, args []string) {
 	}
 
 	// Add data to DB
-	s.AddCert(name, certtype, certcn, certaltnames, tsaurl)
+	s.AddCert(name, certtype, certcn, "", tsaurl)
 }
 
 var addDescription = `
-Add Docker certificate
+Add Docker client certificate
 
 `

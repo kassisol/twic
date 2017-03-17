@@ -18,31 +18,43 @@ func newRemoveCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "rm [name]",
 		Aliases: []string{"remove"},
-		Short:   "Remove Docker certificate",
+		Short:   "Remove Docker client certificate",
 		Long:    removeDescription,
 		Run:     runRemove,
 	}
 
 	flags := cmd.Flags()
-	flags.StringVarP(&tsaUsername, "username", "u", "", "Username")
+
+	flags.StringVarP(&tsaToken, "token", "t", "", "Token")
 	flags.StringVarP(&tsaPassword, "password", "p", "", "Password")
 
 	return cmd
 }
 
 func runRemove(cmd *cobra.Command, args []string) {
-	var username string
 	var password string
+
+	user, err := user.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if user.IsRoot() {
+		log.Fatal("You must not be root to add an client certificate type")
+	}
 
 	if len(args) < 1 || len(args) > 1 {
 		cmd.Usage()
 		os.Exit(-1)
 	}
 
-	config, err := adf.New()
-	if err != nil {
+	config := adf.New("client")
+
+	if err := config.Init(); err != nil {
 		log.Fatal(err)
 	}
+
+	config.SetName(args[0])
 
 	s, err := storage.NewDriver("sqlite", config.DBFileName())
 	if err != nil {
@@ -50,23 +62,15 @@ func runRemove(cmd *cobra.Command, args []string) {
 	}
 	defer s.End()
 
-	if len(tsaUsername) <= 0 {
-		username = readinput.ReadInput("Username")
-	} else {
-		username = tsaUsername
-	}
-
-	if len(tsaPassword) <= 0 {
-		password = readinput.ReadPassword("Password")
-	} else {
-		password = tsaPassword
+	if len(tsaToken) == 0 {
+		if len(tsaPassword) <= 0 {
+			password = readinput.ReadPassword("Password")
+		} else {
+			password = tsaPassword
+		}
 	}
 
 	cert := s.GetCert(args[0])
-
-	if cert.Type == "client" {
-		username = cert.CN
-	}
 
 	// Input validations
 	// IV - Check if name already exists
@@ -74,27 +78,14 @@ func runRemove(cmd *cobra.Command, args []string) {
 		log.Fatal("Name, ", args[0], ", does not exist")
 	}
 
-	// IV - Type
-	if cert.Type == "engine" {
-		user, err := user.New()
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if !user.IsRoot() {
-			log.Fatal("You must be root to remove an engine certificate type")
-		}
-	}
-
-	// IV - Username
-	if len(username) <= 0 {
-		log.Fatal("Empty username is not allowed")
-	}
-
 	// IV - Password
-	if len(password) <= 0 {
-		log.Fatal("Empty password is not allowed")
+	if len(tsaToken) == 0 {
+		if len(password) <= 0 {
+			log.Fatal("Empty password is not allowed")
+		}
 	}
+
+	username := cert.CN
 
 	clt, err := client.New(cert.TSAURL)
 	if err != nil {
@@ -108,13 +99,16 @@ func runRemove(cmd *cobra.Command, args []string) {
 	}
 
 	// Authz
-	token, err := clt.GetToken(username, password)
-	if err != nil {
-		log.Fatal(err)
+	token := tsaToken
+	if len(tsaToken) == 0 {
+		token, err = clt.GetToken(username, password, 0)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	// Send Revocation Request
-	cf, err := config.CertFilesName(args[0])
+	cf, err := config.CertFilesName()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -140,6 +134,6 @@ func runRemove(cmd *cobra.Command, args []string) {
 }
 
 var removeDescription = `
-Remove Docker certificate
+Remove Docker client certificate
 
 `
