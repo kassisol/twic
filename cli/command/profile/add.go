@@ -72,8 +72,9 @@ func runAdd(cmd *cobra.Command, args []string) {
 		dockerport = dockerPort
 	}
 
-	config, err := adf.New()
-	if err != nil {
+	config := adf.New("client")
+
+	if err := config.Init(); err != nil {
 		log.Fatal(err)
 	}
 

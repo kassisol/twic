@@ -27,8 +27,9 @@ func runRemove(cmd *cobra.Command, args []string) {
 		os.Exit(-1)
 	}
 
-	config, err := adf.New()
-	if err != nil {
+	config := adf.New("client")
+
+	if err := config.Init(); err != nil {
 		log.Fatal(err)
 	}
 

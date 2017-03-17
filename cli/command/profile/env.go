@@ -49,8 +49,9 @@ func runEnv(cmd *cobra.Command, args []string) {
 		log.Fatal("Shell is not correct")
 	}
 
-	config, err := adf.New()
-	if err != nil {
+	config := adf.New("client")
+
+	if err := config.Init(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -62,7 +63,9 @@ func runEnv(cmd *cobra.Command, args []string) {
 
 	profile := s.GetProfile(args[0])
 
-	cf, err := config.CertFilesName(profile.Cert.Name)
+	config.SetName(profile.Cert.Name)
+
+	cf, err := config.CertFilesName()
 	if err != nil {
 		log.Fatal(err)
 	}

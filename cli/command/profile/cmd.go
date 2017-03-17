@@ -7,7 +7,7 @@ import (
 func NewCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "profile",
-		Short: "Manage Docker profiles",
+		Short: "Manage Docker client profiles",
 		Long:  profileDescription,
 		Run: func(cmd *cobra.Command, args []string) {
 			cmd.Usage()
@@ -26,7 +26,7 @@ func NewCommand() *cobra.Command {
 }
 
 var profileDescription = `
-The **twic profile** command has subcommands for managing Docker profiles.
+The **twic profile** command has subcommands for managing Docker client profiles.
 
 To see help for a subcommand, use:
 
