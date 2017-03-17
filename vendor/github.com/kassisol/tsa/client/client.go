@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	"github.com/juliengk/stack/client"
 	"github.com/juliengk/stack/jsonapi"
@@ -11,7 +12,7 @@ import (
 )
 
 type Config struct {
-	URL *client.URL
+	URL       *client.URL
 	Directory api.Directory
 }
 
@@ -61,7 +62,7 @@ func (c *Config) GetDirectory() error {
 }
 
 // Authz
-func (c *Config) GetToken(username, password string) (string, error) {
+func (c *Config) GetToken(username, password string, ttl int) (string, error) {
 	cc := &client.Config{
 		Scheme: c.URL.Scheme,
 		Host:   c.URL.Host,
@@ -71,6 +72,7 @@ func (c *Config) GetToken(username, password string) (string, error) {
 
 	req, _ := client.New(cc)
 	req.SetBasicAuth(username, password)
+	req.ValueAdd("ttl", strconv.Itoa(ttl))
 
 	result := req.Get()
 
@@ -128,8 +130,8 @@ func (c *Config) GetCertificate(token string, certType string, csr []byte, durat
 	req.HeaderAdd("Authorization", fmt.Sprintf("Bearer %s", token))
 
 	newcert := api.NewCert{
-		Type: certType,
-		CSR: csr,
+		Type:     certType,
+		CSR:      csr,
 		Duration: duration,
 	}
 

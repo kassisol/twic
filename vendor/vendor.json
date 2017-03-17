@@ -153,9 +153,10 @@
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "ywkmmg0XNVxE6tRjQ73LfueeXoI=",
+			"checksumSHA1": "FgpzvynSQZTdAYENY6V9WANP5cc=",
 			"path": "github.com/kassisol/tsa/client",
-			"revision": ""
+			"revision": "22ebad9c015472364093d41ed2bb8b6a2be136f3",
+			"revisionTime": "2017-03-17T15:49:31Z"
 		},
 		{
 			"checksumSHA1": "ewX53x+vV6NmgmZT0VpVIuIdEKo=",

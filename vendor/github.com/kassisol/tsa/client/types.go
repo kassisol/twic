@@ -10,7 +10,7 @@ import (
 func GetReflectValue(k reflect.Kind, i interface{}) reflect.Value {
 	val := reflect.ValueOf(i)
 
-	if val.Kind() == reflect.Ptr{
+	if val.Kind() == reflect.Ptr {
 		val = val.Elem()
 	}
 
