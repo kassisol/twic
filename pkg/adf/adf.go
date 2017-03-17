@@ -58,7 +58,7 @@ func (c *ClientConfig) Init() error {
 	}
 
 	c.TwicDir = twicDir
-	c. CertsDir = certsDir
+	c.CertsDir = certsDir
 
 	return nil
 }
@@ -87,20 +87,20 @@ func (c *ClientConfig) CertFilesName() (CertFiles, error) {
 }
 
 func (c *EngineConfig) Init() error {
-//	twicDir := "/var/lib/twic"
+	//	twicDir := "/var/lib/twic"
 	certsDir := "/etc/docker/tls"
 
-/*	err := filedir.CreateDirIfNotExist(twicDir, 0750)
-	if err != nil {
-		return err
-	}*/
+	/*	err := filedir.CreateDirIfNotExist(twicDir, 0750)
+		if err != nil {
+			return err
+		}*/
 
 	if err := filedir.CreateDirIfNotExist(certsDir, 0750); err != nil {
 		return err
 	}
 
-//	c.TwicDir = twicDir
-	c. CertsDir = certsDir
+	//	c.TwicDir = twicDir
+	c.CertsDir = certsDir
 
 	return nil
 }

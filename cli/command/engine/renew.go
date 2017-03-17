@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/juliengk/go-utils"
 	"github.com/juliengk/go-utils/user"
-	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 

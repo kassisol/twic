@@ -15,10 +15,10 @@ import (
 
 func newInfoCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "info",
-		Short:   "Information about Docker engine certificate",
-		Long:    infoDescription,
-		Run:     runInfo,
+		Use:   "info",
+		Short: "Information about Docker engine certificate",
+		Long:  infoDescription,
+		Run:   runInfo,
 	}
 
 	return cmd
