@@ -25,8 +25,8 @@ import (
 func newCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "twic",
-		Short: "TWIC is an application to manage Docker certificates",
-		Long:  "TWIC is an application to manage Docker certificates",
+		Short: "TWIC is an application to manage Docker user certificates",
+		Long:  "TWIC is an application to manage Docker user certificates",
 	}
 
 	cmd.SetHelpTemplate(helpTemplate)
