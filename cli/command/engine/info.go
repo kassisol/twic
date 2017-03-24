@@ -25,12 +25,9 @@ func newInfoCommand() *cobra.Command {
 }
 
 func runInfo(cmd *cobra.Command, args []string) {
-	user, err := user.New()
-	if err != nil {
-		log.Fatal(err)
-	}
+	u := user.New()
 
-	if !user.IsRoot() {
+	if !u.IsRoot() {
 		log.Fatal("You must be root to run engine subcommand")
 	}
 

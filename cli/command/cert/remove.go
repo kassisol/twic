@@ -34,12 +34,9 @@ func newRemoveCommand() *cobra.Command {
 func runRemove(cmd *cobra.Command, args []string) {
 	var password string
 
-	user, err := user.New()
-	if err != nil {
-		log.Fatal(err)
-	}
+	u := user.New()
 
-	if user.IsRoot() {
+	if u.IsRoot() {
 		log.Fatal("You must not be root to add an client certificate type")
 	}
 

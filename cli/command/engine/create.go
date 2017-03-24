@@ -58,12 +58,9 @@ func runCreate(cmd *cobra.Command, args []string) {
 
 	go utils.RecoverFunc()
 
-	user, err := user.New()
-	if err != nil {
-		log.Fatal(err)
-	}
+	u := user.New()
 
-	if !user.IsRoot() {
+	if !u.IsRoot() {
 		log.Fatal("You must be root to run engine subcommand")
 	}
 
@@ -108,7 +105,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 
 	config := adf.New("engine")
 
-	if err = config.Init(); err != nil {
+	if err := config.Init(); err != nil {
 		log.Fatal(err)
 	}
 

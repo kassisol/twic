@@ -54,12 +54,9 @@ func runAdd(cmd *cobra.Command, args []string) {
 
 	go utils.RecoverFunc()
 
-	user, err := user.New()
-	if err != nil {
-		log.Fatal(err)
-	}
+	u := user.New()
 
-	if user.IsRoot() {
+	if u.IsRoot() {
 		log.Fatal("You must not be root to add a client certificate type")
 	}
 
@@ -96,7 +93,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 
 	config := adf.New("client")
 
-	if err = config.Init(); err != nil {
+	if err := config.Init(); err != nil {
 		log.Fatal(err)
 	}
 

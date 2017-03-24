@@ -41,19 +41,16 @@ func New(dtype string) Filer {
 }
 
 func (c *ClientConfig) Init() error {
-	user, err := user.New()
-	if err != nil {
-		return err
-	}
+	u := user.New()
 
-	twicDir := path.Join(user.HomeDir, ".twic")
+	twicDir := path.Join(u.HomeDir, ".twic")
 	certsDir := path.Join(twicDir, "certs")
 
-	if err = filedir.CreateDirIfNotExist(twicDir, 0750); err != nil {
+	if err := filedir.CreateDirIfNotExist(twicDir, 0750); err != nil {
 		return err
 	}
 
-	if err = filedir.CreateDirIfNotExist(certsDir, 0750); err != nil {
+	if err := filedir.CreateDirIfNotExist(certsDir, 0750); err != nil {
 		return err
 	}
 
