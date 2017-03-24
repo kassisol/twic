@@ -46,11 +46,11 @@ func (c *ClientConfig) Init() error {
 	twicDir := path.Join(u.HomeDir, ".twic")
 	certsDir := path.Join(twicDir, "certs")
 
-	if err := filedir.CreateDirIfNotExist(twicDir, 0750); err != nil {
+	if err := filedir.CreateDirIfNotExist(twicDir, false, 0750); err != nil {
 		return err
 	}
 
-	if err := filedir.CreateDirIfNotExist(certsDir, 0750); err != nil {
+	if err := filedir.CreateDirIfNotExist(certsDir, false, 0750); err != nil {
 		return err
 	}
 
@@ -71,7 +71,7 @@ func (c *ClientConfig) DBFileName() string {
 func (c *ClientConfig) CertFilesName() (CertFiles, error) {
 	certNameDir := path.Join(c.CertsDir, c.Name)
 
-	if err := filedir.CreateDirIfNotExist(certNameDir, 0750); err != nil {
+	if err := filedir.CreateDirIfNotExist(certNameDir, false, 0750); err != nil {
 		return CertFiles{}, err
 	}
 
@@ -92,7 +92,7 @@ func (c *EngineConfig) Init() error {
 			return err
 		}*/
 
-	if err := filedir.CreateDirIfNotExist(certsDir, 0750); err != nil {
+	if err := filedir.CreateDirIfNotExist(certsDir, false, 0750); err != nil {
 		return err
 	}
 
