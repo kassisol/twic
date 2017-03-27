@@ -10,7 +10,6 @@ cd ${RPMBUILD_PATH}/SPECS
 rpmbuild -ba \
 	--define "_version ${VERSION}" \
 	--define "_release ${RELEASE}" \
-	--define '_unitdir etc/systemd/system' \
 	twic.spec
 
 mkdir -p /tmp/dist
