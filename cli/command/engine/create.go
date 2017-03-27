@@ -201,7 +201,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 
 	fmt.Println("Docker engine certificates created in the directory", cf.Dir, ".")
 
-	fmt.Printf("\nTo configure the Docker Daemon, add the following parameters:\n\n--tlsverify --tlscacert=%s --tlscert=%s --tlskey=%s -H=0.0.0.0:2376", cf.Ca, cf.Key, cf.Crt)
+	fmt.Printf("\nTo configure the Docker Daemon, add the following parameters:\n\n--tlsverify --tlscacert=%s --tlscert=%s --tlskey=%s -H=0.0.0.0:2376\n\n", cf.Ca, cf.Key, cf.Crt)
 }
 
 var createDescription = `
