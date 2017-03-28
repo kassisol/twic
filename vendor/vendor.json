@@ -121,10 +121,10 @@
 			"revisionTime": "2017-02-03T15:06:23Z"
 		},
 		{
-			"checksumSHA1": "pc8Rc8A2wRnYezuAxmTVVsu3K5M=",
+			"checksumSHA1": "qKi17MSxa3gupx3EVasmxuBRbuU=",
 			"path": "github.com/juliengk/stack/client",
-			"revision": "91001162d16599ed64c2ce079157f1fceae7490c",
-			"revisionTime": "2017-03-17T14:10:41Z"
+			"revision": "eccf340fac40def52f76df687e02b3b500bea478",
+			"revisionTime": "2017-03-28T15:59:57Z"
 		},
 		{
 			"checksumSHA1": "QiwR3bOIeQWp3RxvlKsnfYI1a3Q=",
@@ -161,8 +161,8 @@
 		{
 			"checksumSHA1": "FgpzvynSQZTdAYENY6V9WANP5cc=",
 			"path": "github.com/kassisol/tsa/client",
-			"revision": "22ebad9c015472364093d41ed2bb8b6a2be136f3",
-			"revisionTime": "2017-03-17T15:49:31Z"
+			"revision": "66deb3b6b9edd8eed9a94b94331ac3f49f3158a2",
+			"revisionTime": "2017-03-28T17:28:26Z"
 		},
 		{
 			"checksumSHA1": "ewX53x+vV6NmgmZT0VpVIuIdEKo=",
