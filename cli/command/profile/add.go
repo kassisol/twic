@@ -3,6 +3,7 @@ package profile
 import (
 	"fmt"
 	"os"
+	"strconv"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/juliengk/go-utils/readinput"
@@ -84,14 +85,16 @@ func runAdd(cmd *cobra.Command, args []string) {
 	}
 	defer s.End()
 
+	// Input Validations
+	// IV - Profile name
 	if err = validation.IsValidName(args[0]); err != nil {
 		log.Fatal(err)
 	}
 
-	// Get Cert Info
+	// IV - Cert
 	cert := s.GetCert(certname)
 
-	if cert.Name == "" {
+	if len(cert.Name) == 0 {
 		log.Fatal("Certificate name is not valid")
 	}
 
@@ -99,13 +102,28 @@ func runAdd(cmd *cobra.Command, args []string) {
 		log.Fatal("Engine certificate type cannot be added to profile")
 	}
 
-	dockerurl := fmt.Sprintf("%s://%s:%s", dockerscheme, dockerhost, dockerport)
-	u, err := client.ParseUrl(dockerurl)
+	// IV - Docker scheme
+	if dockerscheme != "tcp" {
+		log.Fatal("Docker host scheme should be tcp")
+	}
+
+	// IV - Docker host
+	if len(dockerhost) == 0 {
+		log.Fatal("Docker host cannot be empty")
+	}
+
+	// IV - Docker port
+	p,  err := strconv.Atoi(dockerport)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if u.Scheme != "tcp" {
-		log.Fatal("Docker host scheme should be tcp")
+	if err = validation.IsValidPort(p); err != nil {
+		log.Fatal(err)
+	}
+
+	dockerurl := fmt.Sprintf("%s://%s:%s", dockerscheme, dockerhost, dockerport)
+	if _, err := client.ParseUrl(dockerurl); err != nil {
+		log.Fatal(err)
 	}
 
 	s.AddProfile(args[0], certname, dockerurl)
