@@ -18,16 +18,18 @@ if [ ! -d $DOCKER_TLS_DIR ]; then
 	mkdir $DOCKER_TLS_DIR
 fi
 
-if [ -n $METADATA_URL ]; then
-	TWIC_TSA_URL=`curl -s ${METADATA_URL}/key/tsa-url`
-	TWIC_TOKEN=`curl -s ${METADATA_URL}/key/twic-token`
-	TWIC_CN=`curl -s ${METADATA_URL}/fqdn`
+if [ -n "$METADATA_URL" ]; then
+	METADATA_V1="${METADATA_URL}/metadata/v1"
+
+	TWIC_TSA_URL=`curl -s ${METADATA_V1}/keys/tsa-url`
+	TWIC_TOKEN=`curl -s ${METADATA_V1}/keys/twic-token`
+	TWIC_CN=`curl -s ${METADATA_V1}/fqdn`
 
 	TWIC_ALT_NAMES=""
-	for t in `curl -s ${METADATA_URL}/interfaces/`; do
-		for index in `curl -s ${METADATA_URL}/interfaces/$t`; do
-			ip=`curl -s ${METADATA_URL}/interfaces/${t}${index}address`
-			if [ $TWIC_ALT_NAMES == "" ]; then
+	for t in `curl -s ${METADATA_V1}/interfaces/`; do
+		for index in `curl -s ${METADATA_V1}/interfaces/$t`; do
+			ip=`curl -s ${METADATA_V1}/interfaces/${t}${index}ipv4/address`
+			if [ -z "$TWIC_ALT_NAMES" ]; then
 				TWIC_ALT_NAMES="${ip}"
 			else
 				TWIC_ALT_NAMES="${TWIC_ALT_NAMES},${ip}"

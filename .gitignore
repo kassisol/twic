@@ -1,4 +1,6 @@
 .dapper
 .github-release
+*.swp
 bin/
 dist/
+scripts/image/build
