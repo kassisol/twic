@@ -9,7 +9,7 @@ TARGETS := $(shell ls scripts | grep -vE 'clean|help|release')
 
 .github-release:
 	@echo Downloading github-release
-	@curl -sL https://github.com/aktau/github-release/releases/download/v0.6.2/linux-amd64-github-release.tar.bz2 | tar xjO > .github-release.tmp
+	@curl -sL https://github.com/aktau/github-release/releases/download/v0.7.2/linux-amd64-github-release.tar.bz2 | tar xjO > .github-release.tmp
 	@@chmod +x .github-release.tmp
 	@./.github-release.tmp -v
 	@mv .github-release.tmp .github-release
@@ -28,4 +28,4 @@ release: .github-release
 
 .DEFAULT_GOAL := ci
 
-.PHONY: .dapper $(TARGETS) clean help release
+.PHONY: .dapper .github-release $(TARGETS) clean help release
