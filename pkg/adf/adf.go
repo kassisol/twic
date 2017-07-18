@@ -21,7 +21,6 @@ type ClientConfig struct {
 }
 
 type EngineConfig struct {
-	TwicDir  string
 	CertsDir string
 }
 
@@ -84,19 +83,12 @@ func (c *ClientConfig) CertFilesName() (CertFiles, error) {
 }
 
 func (c *EngineConfig) Init() error {
-	//	twicDir := "/var/lib/twic"
 	certsDir := "/etc/docker/tls"
-
-	/*	err := filedir.CreateDirIfNotExist(twicDir, 0750)
-		if err != nil {
-			return err
-		}*/
 
 	if err := filedir.CreateDirIfNotExist(certsDir, false, 0750); err != nil {
 		return err
 	}
 
-	//	c.TwicDir = twicDir
 	c.CertsDir = certsDir
 
 	return nil
