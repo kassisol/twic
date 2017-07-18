@@ -1,8 +1,6 @@
 package system
 
 import (
-	"fmt"
-
 	"github.com/kassisol/twic/version"
 	"github.com/spf13/cobra"
 )
@@ -13,7 +11,8 @@ func NewVersionCommand() *cobra.Command {
 		Short: "Show the TWIC version information",
 		Long:  versionDescription,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("TWIC", version.Version, "-- HEAD")
+			info := version.New()
+			info.ShowVersion()
 		},
 	}
 
