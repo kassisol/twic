@@ -59,7 +59,6 @@ func runCreate(cmd *cobra.Command, args []string) {
 	go utils.RecoverFunc()
 
 	u := user.New()
-
 	if !u.IsRoot() {
 		log.Fatal("You must be root to run engine subcommand")
 	}
@@ -125,18 +124,31 @@ func runCreate(cmd *cobra.Command, args []string) {
 	// Create cert name directory
 	cf, err := config.CertFilesName()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			if err := os.Remove(cf.Ca); err != nil {
+				log.Fatal(err)
+			}
+			if err := os.Remove(cf.Key); err != nil {
+				log.Fatal(err)
+			}
+
+			log.Fatal(r)
+		}
+	}()
 
 	clt, err := client.New(tsaurl)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	// Get TSA URL directories
 	err = clt.GetDirectory()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	// Authz
@@ -144,19 +156,19 @@ func runCreate(cmd *cobra.Command, args []string) {
 	if len(tsaToken) == 0 {
 		token, err = clt.GetToken(username, password, 5)
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 	}
 
 	// Get CA public Key
 	caCrt, err := clt.GetCACertificate()
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	err = pkix.ToPEMFile(cf.Ca, []byte(caCrt), 0444)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	// Certificate
@@ -164,13 +176,13 @@ func runCreate(cmd *cobra.Command, args []string) {
 	// Key pair
 	key, err := helpers.CreateKey(4096, cf.Key)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	// CSR
 	caCertificate, err := pkix.NewCertificateFromPEM([]byte(caCrt))
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	ca := caCertificate.Crt.Subject
@@ -180,23 +192,19 @@ func runCreate(cmd *cobra.Command, args []string) {
 
 	csr, err := helpers.CreateCSR(ca.Country[0], ca.Province[0], ca.Locality[0], ca.Organization[0], ou, certcn, "", ans, key)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	// Send CSR
 	cert, err := clt.GetCertificate(token, certtype, csr.Bytes, 12)
 	if err != nil {
-		if err = os.RemoveAll(cf.Dir); err != nil {
-			log.Fatal(err)
-		}
-
-		log.Fatal(err)
+		panic(err)
 	}
 
 	// Save Certificate
 	err = pkix.ToPEMFile(cf.Crt, []byte(cert), 0444)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	fmt.Println("Docker engine certificates created in the directory", cf.Dir, ".")

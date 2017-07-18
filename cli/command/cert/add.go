@@ -55,7 +55,6 @@ func runAdd(cmd *cobra.Command, args []string) {
 	go utils.RecoverFunc()
 
 	u := user.New()
-
 	if u.IsRoot() {
 		log.Fatal("You must not be root to add a client certificate type")
 	}
