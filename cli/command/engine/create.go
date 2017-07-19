@@ -8,6 +8,7 @@ import (
 	"github.com/juliengk/go-cert/helpers"
 	"github.com/juliengk/go-cert/pkix"
 	"github.com/juliengk/go-utils"
+	"github.com/juliengk/go-utils/filedir"
 	"github.com/juliengk/go-utils/readinput"
 	"github.com/juliengk/go-utils/user"
 	"github.com/kassisol/tsa/client"
@@ -129,11 +130,15 @@ func runCreate(cmd *cobra.Command, args []string) {
 
 	defer func() {
 		if r := recover(); r != nil {
-			if err := os.Remove(cf.Ca); err != nil {
-				log.Fatal(err)
+			if filedir.FileExists(cf.Ca) {
+				if err := os.Remove(cf.Ca); err != nil {
+					log.Fatal(err)
+				}
 			}
-			if err := os.Remove(cf.Key); err != nil {
-				log.Fatal(err)
+			if filedir.FileExists(cf.Key) {
+				if err := os.Remove(cf.Key); err != nil {
+					log.Fatal(err)
+				}
 			}
 
 			log.Fatal(r)
