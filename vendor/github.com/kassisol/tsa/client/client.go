@@ -8,12 +8,12 @@ import (
 
 	"github.com/juliengk/stack/client"
 	"github.com/juliengk/stack/jsonapi"
-	"github.com/kassisol/tsa/api"
+	"github.com/kassisol/tsa/api/types"
 )
 
 type Config struct {
 	URL       *client.URL
-	Directory api.Directory
+	Directory types.Directory
 }
 
 func New(url string) (*Config, error) {
@@ -43,18 +43,22 @@ func (c *Config) GetDirectory() error {
 
 	result := req.Get()
 
-	if result.Response.StatusCode != 200 {
-		return fmt.Errorf("Problem fetching directory")
-	}
-
 	var response jsonapi.Response
 	if err := json.Unmarshal(result.Body, &response); err != nil {
 		return err
 	}
 
+	if result.Response.StatusCode != 200 {
+		if response.Errors == (jsonapi.ResponseMessage{}) {
+			return fmt.Errorf("Problem fetching directory")
+		}
+
+		return fmt.Errorf(response.Errors.Message)
+	}
+
 	directory := GetDirectory(response.Data)
 
-	if directory == (api.Directory{}) {
+	if directory == (types.Directory{}) {
 		return fmt.Errorf("Empty Directory")
 	}
 
@@ -83,13 +87,17 @@ func (c *Config) GetToken(username, password string, ttl int) (string, error) {
 
 	result := req.Get()
 
-	if result.Response.StatusCode != 200 {
-		return "", fmt.Errorf("Authorization denied")
-	}
-
 	var response jsonapi.Response
 	if err := json.Unmarshal(result.Body, &response); err != nil {
 		return "", err
+	}
+
+	if result.Response.StatusCode != 200 {
+		if response.Errors == (jsonapi.ResponseMessage{}) {
+			return "", fmt.Errorf("Authorization denied")
+		}
+
+		return "", fmt.Errorf(response.Errors.Message)
 	}
 
 	token := GetReflectStringValue(response.Data)
@@ -115,13 +123,17 @@ func (c *Config) GetCACertificate() ([]byte, error) {
 
 	result := req.Get()
 
-	if result.Response.StatusCode != 200 {
-		return nil, fmt.Errorf("Could not fetch CA public key")
-	}
-
 	var response jsonapi.Response
 	if err := json.Unmarshal(result.Body, &response); err != nil {
 		return nil, err
+	}
+
+	if result.Response.StatusCode != 200 {
+		if response.Errors == (jsonapi.ResponseMessage{}) {
+			return nil, fmt.Errorf("Could not fetch CA public key")
+		}
+
+		return nil, fmt.Errorf(response.Errors.Message)
 	}
 
 	info := GetReflectStringValue(response.Data)
@@ -147,7 +159,7 @@ func (c *Config) GetCertificate(token string, certType string, csr []byte, durat
 	req.HeaderAdd("Content-Type", "application/json")
 	req.HeaderAdd("Authorization", fmt.Sprintf("Bearer %s", token))
 
-	newcert := api.NewCert{
+	newcert := types.NewCert{
 		Type:     certType,
 		CSR:      csr,
 		Duration: duration,
@@ -176,7 +188,7 @@ func (c *Config) GetCertificate(token string, certType string, csr []byte, durat
 
 // Revoke Certificate
 func (c *Config) RevokeCertificate(token string, serialNumber int) error {
-	revokecert := api.RevokeCert{
+	revokecert := types.RevokeCert{
 		SerialNumber: serialNumber,
 	}
 

@@ -147,6 +147,12 @@
 			"revision": ""
 		},
 		{
+			"checksumSHA1": "GAWQb1QThdB/eJPSJdaZ/ogJC5Y=",
+			"path": "github.com/kassisol/tsa/api/types",
+			"revision": "5b7d2478800fc97c44c7da3f3c23214d9ae7b86c",
+			"revisionTime": "2017-08-11T06:51:03Z"
+		},
+		{
 			"checksumSHA1": "UeN5PhsTRJMXL7Y93XVk7Obdm4Y=",
 			"path": "github.com/kassisol/tsa/auth",
 			"revision": ""
@@ -162,10 +168,10 @@
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "jtdYPiPkZHjPfLRj677srhjORZs=",
+			"checksumSHA1": "reOdLUbzzJto4k0nesxU9DNCWKc=",
 			"path": "github.com/kassisol/tsa/client",
-			"revision": "df4302e5c9257ef9a170553a0059857e07a854b3",
-			"revisionTime": "2017-08-10T11:09:21Z"
+			"revision": "e94bfad667e394bc62dd9bb157cc138e4d541150",
+			"revisionTime": "2017-08-11T09:27:04Z"
 		},
 		{
 			"checksumSHA1": "ewX53x+vV6NmgmZT0VpVIuIdEKo=",
