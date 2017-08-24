@@ -19,12 +19,6 @@
 			"revisionTime": "2016-09-04T16:08:59Z"
 		},
 		{
-			"checksumSHA1": "2Fy1Y6Z3lRRX1891WF/+HT4XS2I=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/dgrijalva/jwt-go",
-			"path": "github.com/dgrijalva/jwt-go",
-			"revision": ""
-		},
-		{
 			"checksumSHA1": "K6exl2ouL7d8cR2i378EzZOdRVI=",
 			"path": "github.com/howeyc/gopass",
 			"revision": "bf9dde6d0d2c004a008c27aaee91170c786f6db8",
@@ -59,27 +53,6 @@
 			"path": "github.com/juliengk/go-cert/ca",
 			"revision": "40c027d764ec8c43a0c47644e209c68717823e56",
 			"revisionTime": "2017-07-19T13:21:51Z"
-		},
-		{
-			"checksumSHA1": "thLb2xmahj+vdkjQtCivHp6rw4I=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/juliengk/go-cert/ca/database",
-			"path": "github.com/juliengk/go-cert/ca/database",
-			"revision": "de8d5ff62709d828cbf23697db8632b57598d540",
-			"revisionTime": "2017-07-18T17:52:47Z"
-		},
-		{
-			"checksumSHA1": "kJTlh2h015R0yTm+D+XHPBOd9Hw=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/juliengk/go-cert/ca/database/backend",
-			"path": "github.com/juliengk/go-cert/ca/database/backend",
-			"revision": "de8d5ff62709d828cbf23697db8632b57598d540",
-			"revisionTime": "2017-07-18T17:52:47Z"
-		},
-		{
-			"checksumSHA1": "oPS5VKqekhBCX1bS2hp9cO/EEmo=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/juliengk/go-cert/errors",
-			"path": "github.com/juliengk/go-cert/errors",
-			"revision": "de8d5ff62709d828cbf23697db8632b57598d540",
-			"revisionTime": "2017-07-18T17:52:47Z"
 		},
 		{
 			"checksumSHA1": "vZZqTmcNLN5ZpiqrydQlJjVg8IY=",
@@ -130,20 +103,9 @@
 			"revisionTime": "2017-07-27T14:55:35Z"
 		},
 		{
-			"checksumSHA1": "QiwR3bOIeQWp3RxvlKsnfYI1a3Q=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/juliengk/stack/errors",
-			"path": "github.com/juliengk/stack/errors",
-			"revision": ""
-		},
-		{
 			"checksumSHA1": "DqbRCmLeSO2vubMBvXRDP0qoN1Q=",
 			"origin": "github.com/kassisol/tsa/vendor/github.com/juliengk/stack/jsonapi",
 			"path": "github.com/juliengk/stack/jsonapi",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "WoOscwnT5h5W5jyYCy6wlDtwjO4=",
-			"path": "github.com/kassisol/tsa/api",
 			"revision": ""
 		},
 		{
@@ -153,98 +115,10 @@
 			"revisionTime": "2017-08-11T06:51:03Z"
 		},
 		{
-			"checksumSHA1": "UeN5PhsTRJMXL7Y93XVk7Obdm4Y=",
-			"path": "github.com/kassisol/tsa/auth",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "+CAUNE3KDfUKz9fw9ukWJfCsnT8=",
-			"path": "github.com/kassisol/tsa/auth/driver",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "acGkhzR7UrrzOFlrfNtp8qEjy5U=",
-			"path": "github.com/kassisol/tsa/cli/command",
-			"revision": ""
-		},
-		{
 			"checksumSHA1": "reOdLUbzzJto4k0nesxU9DNCWKc=",
 			"path": "github.com/kassisol/tsa/client",
 			"revision": "e94bfad667e394bc62dd9bb157cc138e4d541150",
 			"revisionTime": "2017-08-11T09:27:04Z"
-		},
-		{
-			"checksumSHA1": "ewX53x+vV6NmgmZT0VpVIuIdEKo=",
-			"path": "github.com/kassisol/tsa/errors",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "RbCPcY+8AxTUtMbBQQIFwQUlW1U=",
-			"path": "github.com/kassisol/tsa/pkg/api",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "TYasvsYk/LBge2Wh/GdLQumnZvs=",
-			"path": "github.com/kassisol/tsa/pkg/token",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "y54OrIvXSxtwx81gZih3BtiH0Us=",
-			"path": "github.com/kassisol/tsa/storage",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "FgFVknN1qAFqRjbx2cFq3LTUVGA=",
-			"path": "github.com/kassisol/tsa/storage/driver",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "qUd2AA/+1E7WacQ/2pNaSiU8azM=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/labstack/echo",
-			"path": "github.com/labstack/echo",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "EMeRIQY2vGlMS+0A1/F8qatmDsM=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/labstack/echo/middleware",
-			"path": "github.com/labstack/echo/middleware",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "NvfQq6Y6kh9cMw+y1m00ivEd5b4=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/labstack/gommon/bytes",
-			"path": "github.com/labstack/gommon/bytes",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "R6DzcBLEP0BONPpsyr+11N7xh5w=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/labstack/gommon/color",
-			"path": "github.com/labstack/gommon/color",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "uHA6zbtxzJce4r+6uk8zu11qkuk=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/labstack/gommon/log",
-			"path": "github.com/labstack/gommon/log",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "XvsHo25Kr69E5xxTDatXzCQc6sI=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/labstack/gommon/random",
-			"path": "github.com/labstack/gommon/random",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "I4njd26dG5hxFT2nawuByM4pxzY=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/mattn/go-colorable",
-			"path": "github.com/mattn/go-colorable",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "EkT5JmFvz3zOPWappEFyYWUaeY0=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/mattn/go-isatty",
-			"path": "github.com/mattn/go-isatty",
-			"revision": ""
 		},
 		{
 			"checksumSHA1": "07f2TGgPsNaohoNTLQxeF7tw5lY=",
@@ -283,40 +157,10 @@
 			"revisionTime": "2017-01-30T21:42:45Z"
 		},
 		{
-			"checksumSHA1": "LTOa3BADhwvT0wFCknPueQALm8I=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/valyala/bytebufferpool",
-			"path": "github.com/valyala/bytebufferpool",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "j7lWhgAteszPecjIkS12+tjXE2E=",
-			"origin": "github.com/kassisol/tsa/vendor/github.com/valyala/fasttemplate",
-			"path": "github.com/valyala/fasttemplate",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "D1l731k467E5E4Uau+cQKEYkaVY=",
-			"origin": "github.com/kassisol/tsa/vendor/golang.org/x/crypto/acme",
-			"path": "golang.org/x/crypto/acme",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "MG1frAM4p4lg1ioOhUa7rjN3xm0=",
-			"origin": "github.com/kassisol/tsa/vendor/golang.org/x/crypto/acme/autocert",
-			"path": "golang.org/x/crypto/acme/autocert",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "UlBPMaKC4dO/9ge7wJfDtptVoVo=",
-			"origin": "github.com/kassisol/tsa/vendor/golang.org/x/crypto/ocsp",
-			"path": "golang.org/x/crypto/ocsp",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "xiderUuvye8Kpn7yX3niiJg32bE=",
+			"checksumSHA1": "nqWNlnMmVpt628zzvyo6Yv2CX5Q=",
 			"path": "golang.org/x/crypto/ssh/terminal",
-			"revision": "453249f01cfeb54c3d549ddb75ff152ca243f9d8",
-			"revisionTime": "2017-02-08T20:51:15Z"
+			"revision": "eb71ad9bd329b5ac0fd0148dd99bd62e8be8e035",
+			"revisionTime": "2017-08-07T10:11:13Z"
 		},
 		{
 			"checksumSHA1": "Y+HGqEkYM15ir+J93MEaHdyFy0c=",
@@ -325,16 +169,16 @@
 			"revisionTime": "2017-01-26T11:54:58Z"
 		},
 		{
-			"checksumSHA1": "WHc3uByvGaMcnSoI21fhzYgbOgg=",
-			"origin": "github.com/kassisol/tsa/vendor/golang.org/x/net/context/ctxhttp",
-			"path": "golang.org/x/net/context/ctxhttp",
-			"revision": ""
-		},
-		{
 			"checksumSHA1": "rTPzsn0jeqfgnQR0OsMKR8JRy5Y=",
 			"path": "golang.org/x/sys/unix",
 			"revision": "e24f485414aeafb646f6fca458b0bf869c0880a1",
 			"revisionTime": "2017-02-11T02:03:03Z"
+		},
+		{
+			"checksumSHA1": "gVfCD++7aVcdKF2spv6XkEM/wYw=",
+			"path": "golang.org/x/sys/windows",
+			"revision": "07c182904dbd53199946ba614a412c61d3c548f5",
+			"revisionTime": "2017-08-16T12:26:40Z"
 		},
 		{
 			"checksumSHA1": "0KwOlQV1dNUh9X8t+5s7nX5bqfk=",
