@@ -8,7 +8,7 @@ import (
 	"github.com/juliengk/go-cert/pkix"
 	"github.com/juliengk/go-utils/user"
 	"github.com/juliengk/stack/client"
-	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/kassisol/twic/pkg/date"
 	"github.com/spf13/cobra"
 )
@@ -36,18 +36,12 @@ func runInfo(cmd *cobra.Command, args []string) {
 		os.Exit(-1)
 	}
 
-	config := adf.New("engine")
-
-	if err := config.Init(); err != nil {
+	cfg := adf.NewEngine()
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 
-	cf, err := config.CertFilesName()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	certificate, err := pkix.NewCertificateFromPEMFile(cf.Crt)
+	certificate, err := pkix.NewCertificateFromPEMFile(cfg.TLS.CrtFile)
 	if err != nil {
 		log.Fatal(err)
 	}

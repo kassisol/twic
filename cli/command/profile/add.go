@@ -9,7 +9,7 @@ import (
 	"github.com/juliengk/go-utils/readinput"
 	"github.com/juliengk/go-utils/validation"
 	"github.com/juliengk/stack/client"
-	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/kassisol/twic/storage"
 	"github.com/spf13/cobra"
 )
@@ -73,13 +73,12 @@ func runAdd(cmd *cobra.Command, args []string) {
 		dockerport = dockerPort
 	}
 
-	config := adf.New("client")
-
-	if err := config.Init(); err != nil {
+	cfg := adf.NewClient()
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 
-	s, err := storage.NewDriver("sqlite", config.DBFileName())
+	s, err := storage.NewDriver("sqlite", cfg.App.Dir.Root)
 	if err != nil {
 		log.Fatal(err)
 	}

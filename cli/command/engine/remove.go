@@ -10,7 +10,7 @@ import (
 	"github.com/juliengk/go-utils/user"
 	sclient "github.com/juliengk/stack/client"
 	"github.com/kassisol/tsa/client"
-	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/spf13/cobra"
 )
 
@@ -67,18 +67,12 @@ func runRemove(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	config := adf.New("engine")
-
-	if err := config.Init(); err != nil {
+	cfg := adf.NewEngine()
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 
-	cf, err := config.CertFilesName()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	certificate, err := pkix.NewCertificateFromPEMFile(cf.Crt)
+	certificate, err := pkix.NewCertificateFromPEMFile(cfg.TLS.CrtFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -122,15 +116,15 @@ func runRemove(cmd *cobra.Command, args []string) {
 	}
 
 	// Once done remove files
-	if err = os.Remove(cf.Ca); err != nil {
+	if err = os.Remove(cfg.TLS.CaFile); err != nil {
 		log.Fatal(err)
 	}
 
-	if err = os.Remove(cf.Key); err != nil {
+	if err = os.Remove(cfg.TLS.KeyFile); err != nil {
 		log.Fatal(err)
 	}
 
-	if err = os.Remove(cf.Crt); err != nil {
+	if err = os.Remove(cfg.TLS.CrtFile); err != nil {
 		log.Fatal(err)
 	}
 }

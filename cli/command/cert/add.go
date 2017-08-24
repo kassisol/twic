@@ -11,7 +11,7 @@ import (
 	"github.com/juliengk/go-utils/user"
 	"github.com/juliengk/go-utils/validation"
 	"github.com/kassisol/tsa/client"
-	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/kassisol/twic/pkg/cert"
 	"github.com/kassisol/twic/storage"
 	"github.com/kassisol/twic/storage/driver"
@@ -90,16 +90,15 @@ func runAdd(cmd *cobra.Command, args []string) {
 
 	certcn := username
 
-	config := adf.New("client")
-
-	if err := config.Init(); err != nil {
+	cfg := adf.NewClient()
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 
-	config.SetName(name)
+	cfg.SetName(name)
 
 	// DB
-	s, err := storage.NewDriver("sqlite", config.DBFileName())
+	s, err := storage.NewDriver("sqlite", cfg.App.Dir.Root)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -129,11 +128,6 @@ func runAdd(cmd *cobra.Command, args []string) {
 	}
 
 	// Create cert name directory
-	cf, err := config.CertFilesName()
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	clt, err := client.New(tsaurl)
 	if err != nil {
 		log.Fatal(err)
@@ -160,7 +154,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
-	err = pkix.ToPEMFile(cf.Ca, []byte(caCrt), 0444)
+	err = pkix.ToPEMFile(cfg.TLS.CaFile, []byte(caCrt), 0444)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -168,7 +162,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 	// Certificate
 	// -- Client Part --
 	// Key pair
-	key, err := helpers.CreateKey(4096, cf.Key)
+	key, err := helpers.CreateKey(4096, cfg.TLS.KeyFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -192,7 +186,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 	// Send CSR
 	cert, err := clt.GetCertificate(token, certtype, csr.Bytes, 12)
 	if err != nil {
-		if err = os.RemoveAll(cf.Dir); err != nil {
+		if err = os.RemoveAll(cfg.Profile.CertDir); err != nil {
 			log.Fatal(err)
 		}
 
@@ -200,7 +194,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 	}
 
 	// Save Certificate
-	err = pkix.ToPEMFile(cf.Crt, []byte(cert), 0444)
+	err = pkix.ToPEMFile(cfg.TLS.CrtFile, []byte(cert), 0444)
 	if err != nil {
 		log.Fatal(err)
 	}

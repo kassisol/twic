@@ -5,7 +5,7 @@ import (
 	"text/template"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/kassisol/twic/storage"
 	"github.com/spf13/cobra"
 )
@@ -49,13 +49,12 @@ func runEnv(cmd *cobra.Command, args []string) {
 		log.Fatal("Shell is not correct")
 	}
 
-	config := adf.New("client")
-
-	if err := config.Init(); err != nil {
+	cfg := adf.NewClient()
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 
-	s, err := storage.NewDriver("sqlite", config.DBFileName())
+	s, err := storage.NewDriver("sqlite", cfg.App.Dir.Root)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -63,19 +62,14 @@ func runEnv(cmd *cobra.Command, args []string) {
 
 	profile := s.GetProfile(args[0])
 
-	config.SetName(profile.Cert.Name)
-
-	cf, err := config.CertFilesName()
-	if err != nil {
-		log.Fatal(err)
-	}
+	cfg.SetName(profile.Cert.Name)
 
 	data := Data{
 		Shell:     profileEnvShell,
 		Unset:     profileEnvUnset,
 		TLSVerify: "1",
 		Host:      profile.DockerHost,
-		CertPath:  cf.Dir,
+		CertPath:  cfg.Profile.CertDir,
 	}
 
 	t := template.New("Shell commands template")

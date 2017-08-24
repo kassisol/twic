@@ -127,6 +127,12 @@
 			"revisionTime": "2017-08-24T08:05:08Z"
 		},
 		{
+			"checksumSHA1": "EM+7DVZ4CNTXWuocdphbuRsiiFY=",
+			"path": "github.com/kassisol/tsa/pkg/adf",
+			"revision": "ddb6f3432d24aa2e4ac8fb9ee95d3f6d6282fc12",
+			"revisionTime": "2017-08-24T08:05:08Z"
+		},
+		{
 			"checksumSHA1": "07f2TGgPsNaohoNTLQxeF7tw5lY=",
 			"path": "github.com/mattn/go-sqlite3",
 			"revision": "588cd3292ba03bb748befd607cc5c72e13204533",

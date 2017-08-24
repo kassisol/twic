@@ -12,7 +12,7 @@ import (
 	"github.com/juliengk/go-utils/readinput"
 	"github.com/juliengk/go-utils/user"
 	"github.com/kassisol/tsa/client"
-	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/kassisol/twic/pkg/cert"
 	"github.com/spf13/cobra"
 )
@@ -103,9 +103,8 @@ func runCreate(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	config := adf.New("engine")
-
-	if err := config.Init(); err != nil {
+	cfg := adf.NewEngine()
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -123,20 +122,15 @@ func runCreate(cmd *cobra.Command, args []string) {
 	}
 
 	// Create cert name directory
-	cf, err := config.CertFilesName()
-	if err != nil {
-		panic(err)
-	}
-
 	defer func() {
 		if r := recover(); r != nil {
-			if filedir.FileExists(cf.Ca) {
-				if err := os.Remove(cf.Ca); err != nil {
+			if filedir.FileExists(cfg.TLS.CaFile) {
+				if err := os.Remove(cfg.TLS.CaFile); err != nil {
 					log.Fatal(err)
 				}
 			}
-			if filedir.FileExists(cf.Key) {
-				if err := os.Remove(cf.Key); err != nil {
+			if filedir.FileExists(cfg.TLS.KeyFile) {
+				if err := os.Remove(cfg.TLS.KeyFile); err != nil {
 					log.Fatal(err)
 				}
 			}
@@ -171,7 +165,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 		panic(err)
 	}
 
-	err = pkix.ToPEMFile(cf.Ca, []byte(caCrt), 0444)
+	err = pkix.ToPEMFile(cfg.TLS.CaFile, []byte(caCrt), 0444)
 	if err != nil {
 		panic(err)
 	}
@@ -179,7 +173,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 	// Certificate
 	// -- Client Part --
 	// Key pair
-	key, err := helpers.CreateKey(4096, cf.Key)
+	key, err := helpers.CreateKey(4096, cfg.TLS.KeyFile)
 	if err != nil {
 		panic(err)
 	}
@@ -207,14 +201,14 @@ func runCreate(cmd *cobra.Command, args []string) {
 	}
 
 	// Save Certificate
-	err = pkix.ToPEMFile(cf.Crt, []byte(cert), 0444)
+	err = pkix.ToPEMFile(cfg.TLS.CrtFile, []byte(cert), 0444)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("Docker engine certificates created in the directory", cf.Dir, ".")
+	fmt.Println("Docker engine certificates created in the directory", cfg.CertsDir, ".")
 
-	fmt.Printf("\nTo configure the Docker Daemon, add the following parameters:\n\n--tlsverify --tlscacert=%s --tlskey=%s --tlscert=%s -H tcp://0.0.0.0:2376\n\n", cf.Ca, cf.Key, cf.Crt)
+	fmt.Printf("\nTo configure the Docker Daemon, add the following parameters:\n\n--tlsverify --tlscacert=%s --tlskey=%s --tlscert=%s -H tcp://0.0.0.0:2376\n\n", cfg.TLS.CaFile, cfg.TLS.KeyFile, cfg.TLS.CrtFile)
 }
 
 var createDescription = `

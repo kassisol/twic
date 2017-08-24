@@ -7,7 +7,7 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/juliengk/go-cert/pkix"
-	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/kassisol/twic/pkg/date"
 	"github.com/kassisol/twic/storage"
 	"github.com/spf13/cobra"
@@ -31,13 +31,12 @@ func runList(cmd *cobra.Command, args []string) {
 		os.Exit(-1)
 	}
 
-	config := adf.New("client")
-
-	if err := config.Init(); err != nil {
+	cfg := adf.NewClient()
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 
-	s, err := storage.NewDriver("sqlite", config.DBFileName())
+	s, err := storage.NewDriver("sqlite", cfg.App.Dir.Root)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,14 +51,9 @@ func runList(cmd *cobra.Command, args []string) {
 		for _, c := range certs {
 			var expire string
 
-			config.SetName(c.Name)
+			cfg.SetName(c.Name)
 
-			cf, err := config.CertFilesName()
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			certificate, err := pkix.NewCertificateFromPEMFile(cf.Crt)
+			certificate, err := pkix.NewCertificateFromPEMFile(cfg.TLS.CrtFile)
 			if err == nil {
 				expire = date.ExpireDateString(certificate.Crt.NotAfter)
 			}

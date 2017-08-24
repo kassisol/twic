@@ -8,7 +8,7 @@ import (
 	"github.com/juliengk/go-utils/readinput"
 	"github.com/juliengk/go-utils/user"
 	"github.com/kassisol/tsa/client"
-	"github.com/kassisol/twic/pkg/adf"
+	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/kassisol/twic/storage"
 	"github.com/kassisol/twic/storage/driver"
 	"github.com/spf13/cobra"
@@ -45,15 +45,14 @@ func runRemove(cmd *cobra.Command, args []string) {
 		os.Exit(-1)
 	}
 
-	config := adf.New("client")
-
-	if err := config.Init(); err != nil {
+	cfg := adf.NewClient()
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 
-	config.SetName(args[0])
+	cfg.SetName(args[0])
 
-	s, err := storage.NewDriver("sqlite", config.DBFileName())
+	s, err := storage.NewDriver("sqlite", cfg.App.Dir.Root)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -105,12 +104,7 @@ func runRemove(cmd *cobra.Command, args []string) {
 	}
 
 	// Send Revocation Request
-	cf, err := config.CertFilesName()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	certificate, err := pkix.NewCertificateFromPEMFile(cf.Crt)
+	certificate, err := pkix.NewCertificateFromPEMFile(cfg.TLS.CrtFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -125,7 +119,7 @@ func runRemove(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
-	if err = os.RemoveAll(cf.Dir); err != nil {
+	if err = os.RemoveAll(cfg.Profile.CertDir); err != nil {
 		log.Fatal(err)
 	}
 }

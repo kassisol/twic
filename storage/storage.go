@@ -24,9 +24,9 @@ func supportedDriver() string {
 	return strings.Join(drivers, ",")
 }
 
-func NewDriver(driver, appPath string) (driver.Storager, error) {
+func NewDriver(driver, config string) (driver.Storager, error) {
 	if init, exists := initializers[driver]; exists {
-		return init(appPath)
+		return init(config)
 	}
 
 	return nil, fmt.Errorf("The Storage Driver: %s is not supported. Supported drivers are %s", driver, supportedDriver())
