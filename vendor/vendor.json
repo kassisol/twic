@@ -55,6 +55,12 @@
 			"revisionTime": "2017-07-19T13:21:51Z"
 		},
 		{
+			"checksumSHA1": "kJTlh2h015R0yTm+D+XHPBOd9Hw=",
+			"path": "github.com/juliengk/go-cert/ca/database/backend",
+			"revision": "a9c8ef76eae7d11ffb49cfa9917e4bd97847b92a",
+			"revisionTime": "2017-08-24T08:00:34Z"
+		},
+		{
 			"checksumSHA1": "vZZqTmcNLN5ZpiqrydQlJjVg8IY=",
 			"path": "github.com/juliengk/go-cert/helpers",
 			"revision": "40c027d764ec8c43a0c47644e209c68717823e56",
@@ -97,10 +103,10 @@
 			"revisionTime": "2017-02-03T15:06:23Z"
 		},
 		{
-			"checksumSHA1": "c2dKkK2mdlX+cTlwo4NHfYltHy4=",
+			"checksumSHA1": "k14jB9aDa2i5TRE4LT8qbi8AqaU=",
 			"path": "github.com/juliengk/stack/client",
-			"revision": "ec5d8496ed569e58ec268ac81764da9609eee9de",
-			"revisionTime": "2017-07-27T14:55:35Z"
+			"revision": "ade92a7733a95abd3765d573b1a8358df2631ba8",
+			"revisionTime": "2017-08-07T09:06:09Z"
 		},
 		{
 			"checksumSHA1": "DqbRCmLeSO2vubMBvXRDP0qoN1Q=",
@@ -109,16 +115,16 @@
 			"revision": ""
 		},
 		{
-			"checksumSHA1": "GAWQb1QThdB/eJPSJdaZ/ogJC5Y=",
+			"checksumSHA1": "qoFyRiMxsfZlPMNqYRuWcs060Q0=",
 			"path": "github.com/kassisol/tsa/api/types",
-			"revision": "5b7d2478800fc97c44c7da3f3c23214d9ae7b86c",
-			"revisionTime": "2017-08-11T06:51:03Z"
+			"revision": "ddb6f3432d24aa2e4ac8fb9ee95d3f6d6282fc12",
+			"revisionTime": "2017-08-24T08:05:08Z"
 		},
 		{
-			"checksumSHA1": "reOdLUbzzJto4k0nesxU9DNCWKc=",
+			"checksumSHA1": "X8bSIb26XT+fTnZw6f4AjVvcIEs=",
 			"path": "github.com/kassisol/tsa/client",
-			"revision": "e94bfad667e394bc62dd9bb157cc138e4d541150",
-			"revisionTime": "2017-08-11T09:27:04Z"
+			"revision": "ddb6f3432d24aa2e4ac8fb9ee95d3f6d6282fc12",
+			"revisionTime": "2017-08-24T08:05:08Z"
 		},
 		{
 			"checksumSHA1": "07f2TGgPsNaohoNTLQxeF7tw5lY=",
