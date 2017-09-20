@@ -7,6 +7,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/kassisol/tsa/pkg/adf"
 	"github.com/kassisol/twic/storage"
+	"github.com/kassisol/twic/storage/driver"
 	"github.com/spf13/cobra"
 )
 
@@ -61,6 +62,10 @@ func runEnv(cmd *cobra.Command, args []string) {
 	defer s.End()
 
 	profile := s.GetProfile(args[0])
+
+	if profile == (driver.ProfileResult{}) {
+		log.Fatal("Profile does not exist")
+	}
 
 	cfg.SetName(profile.Cert.Name)
 
