@@ -31,17 +31,11 @@ ARG ARCH=${HOST_ARCH}
 
 ARG APP_REPO=kassisol
 
-ARG DOCKER_VERSION=17.05.0-ce
-
-ARG DOCKER_URL_amd64=https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz
-
 # Set up environment and export all ARGS as ENV
 ENV ARCH=${ARCH} \
 	HOST_ARCH=${HOST_ARCH}
 
-ENV DOCKER_URL=${DOCKER_URL_amd64} \
-	DOCKER_COMPOSE_VERSION=1.14.0 \
-	DAPPER_HOST_ARCH=${DAPPER_HOST_ARCH} \
+ENV DAPPER_HOST_ARCH=${DAPPER_HOST_ARCH} \
 	GOPATH=/go \
 	GOARCH=$ARCH \
 	GO_VERSION=1.8.3
@@ -58,10 +52,6 @@ RUN git clone https://github.com/juliengk/dot-files /root/Dotfiles \
 	&& chmod +x /root/bin/get-dotfiles.sh \
 	&& /root/bin/get-dotfiles.sh \
 	&& /root/bin/dotfiles -sync -force
-
-# Install Docker
-RUN curl -sfL ${DOCKER_URL} | tar -xzC /usr/local/src \
-	&& cp /usr/local/src/docker/docker* /usr/bin/
 
 # Install Go
 RUN curl -sfL https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz | tar -xzC /usr/local
