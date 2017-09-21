@@ -4,10 +4,16 @@ TWIC="/usr/local/bin/twic"
 DOCKER_TLS_DIR="/etc/docker/tls"
 
 function report_error() {
+	local msg=$1
+
+	echo $msg
+	exit 1
+}
+
+function report_unset_var() {
 	local var=$1
 
-	echo "var \"${var}\" is not set"
-	exit 1
+	report_error "var \"${var}\" is not set"
 }
 
 if [ `ls -1 ${DOCKER_TLS_DIR}/ | wc -l` -gt 0 ]; then
@@ -15,7 +21,7 @@ if [ `ls -1 ${DOCKER_TLS_DIR}/ | wc -l` -gt 0 ]; then
 fi
 
 if [ ! -d $DOCKER_TLS_DIR ]; then
-	mkdir $DOCKER_TLS_DIR
+	report_error "Directory ${DOCKER_TLS_DIR} is not mounted"
 fi
 
 if [ -n "$METADATA_URL" ]; then
@@ -36,24 +42,24 @@ if [ -n "$METADATA_URL" ]; then
 			fi
 		done
 	done
-	TWIC_ALT_NAMES="${TWIC_ALT_NAMES},127.0.0.1"
-else
-	if [ -z $TWIC_TSA_URL ]; then
-		report_error TWIC_TSA_URL
-	fi
-
-	if [ -z $TWIC_TOKEN ]; then
-		report_error TWIC_TOKEN
-	fi
-
-	if [ -z $TWIC_CN ]; then
-		report_error TWIC_CN
-	fi
-
-	if [ -z $TWIC_ALT_NAMES ]; then
-		report_error TWIC_ALT_NAMES
-	fi
 fi
+
+if [ -z "$TWIC_TSA_URL" ]; then
+	report_unset_var TWIC_TSA_URL
+fi
+
+if [ -z "$TWIC_TOKEN" ]; then
+	report_unset_var TWIC_TOKEN
+fi
+
+if [ -z "$TWIC_CN" ]; then
+	report_unset_var TWIC_CN
+fi
+
+if [ -z "$TWIC_ALT_NAMES" ]; then
+	report_unset_var TWIC_ALT_NAMES
+fi
+TWIC_ALT_NAMES="${TWIC_ALT_NAMES},127.0.0.1"
 
 $TWIC engine create \
 	--tsa-url $TWIC_TSA_URL \
