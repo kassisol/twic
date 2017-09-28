@@ -16,7 +16,7 @@ import (
 
 func newRemoveCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "rm [name]",
+		Use:     "rm",
 		Aliases: []string{"remove"},
 		Short:   "Remove Docker engine certificate",
 		Long:    removeDescription,
@@ -48,6 +48,12 @@ func runRemove(cmd *cobra.Command, args []string) {
 	}
 
 	if len(tsaToken) == 0 {
+		if len(tsaUsername) <= 0 {
+			username = readinput.ReadPassword("Username")
+		} else {
+			username = tsaUsername
+		}
+
 		if len(tsaPassword) <= 0 {
 			password = readinput.ReadPassword("Password")
 		} else {
