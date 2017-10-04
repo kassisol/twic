@@ -1,6 +1,7 @@
 package cert
 
 import (
+	"net/url"
 	"os"
 
 	log "github.com/Sirupsen/logrus"
@@ -115,13 +116,23 @@ func runAdd(cmd *cobra.Command, args []string) {
 		log.Fatal("Name, ", name, ", already exists")
 	}
 
+	// IV - TSA URL
+	tu, err := url.Parse(tsaurl)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if tu.Scheme != "https" {
+		log.Fatal("TSA URL scheme should be https")
+	}
+
 	// IV - Username
 	if len(username) <= 0 {
 		log.Fatal("Empty username is not allowed")
 	}
 
+	// IV - Password
 	if len(tsaToken) == 0 {
-		// IV - Password
 		if len(password) <= 0 {
 			log.Fatal("Empty password is not allowed")
 		}
