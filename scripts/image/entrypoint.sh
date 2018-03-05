@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ -n "$debug" ]; then
+	set -x
+fi
+
 TWIC="/usr/local/bin/twic"
 DOCKER_TLS_DIR="/etc/docker/tls"
 
