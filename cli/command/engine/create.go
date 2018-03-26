@@ -178,6 +178,10 @@ func runCreate(cmd *cobra.Command, args []string) {
 
 	ans := utils.CreateSlice(certaltnames, ",")
 
+	if !utils.StringInSlice(certcn, ans, true) {
+		ans = append(ans, certcn)
+	}
+
 	csr, err := helpers.CreateCSR(ca.Country[0], ca.Province[0], ca.Locality[0], ca.Organization[0], ou, certcn, "", ans, key)
 	if err != nil {
 		panic(err)
