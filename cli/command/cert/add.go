@@ -197,7 +197,7 @@ func runAdd(cmd *cobra.Command, args []string) {
 	// Send CSR
 	cert, err := clt.GetCertificate(token, certtype, csr.Bytes, 12)
 	if err != nil {
-		if err = os.RemoveAll(cfg.Profile.CertDir); err != nil {
+		if err1 := os.RemoveAll(cfg.Profile.CertDir); err1 != nil {
 			log.Fatal(err)
 		}
 
