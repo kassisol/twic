@@ -14,7 +14,7 @@ fi
 
 CONST="-X github.com/kassisol/twic/version.Version=${VERSION} -X github.com/kassisol/twic/version.GitCommit=${COMMIT} -X github.com/kassisol/twic/version.GitState=${GITSTATE} -X github.com/kassisol/twic/version.BuildDate=$(date +%s)"
 
-LDFLAGS=${LDFLAGS:-"-linkmode external -extldflags -static -s -w"}
+LDFLAGS=${LDFLAGS:-"-linkmode external -extldflags -s -w"}
 
 cd $(dirname $0)/..
 
@@ -30,6 +30,7 @@ if [ "$CROSS" = 1 ]; then
 
 	echo Built ${OUTPUT}-Linux-x86_64
 else
+	export GO111MODULE=auto
 	go build -ldflags "${CONST} ${LDFLAGS}" -o ${OUTPUT}
 
 	strip --strip-all ${OUTPUT}

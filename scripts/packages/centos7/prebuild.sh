@@ -10,6 +10,7 @@ mkdir -p build
 
 cp ${ROOTDIR}/bin/twic build/
 
+export GO111MODULE=auto
 go run ${ROOTDIR}/gen/man/genman.go
 cp -r /tmp/twic/man build/
 
