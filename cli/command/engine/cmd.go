@@ -8,6 +8,7 @@ var (
 	certType     string
 	certCN       string
 	certAltNames string
+	duration     int
 
 	tsaURL      string
 	tsaToken    string

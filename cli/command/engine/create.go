@@ -29,6 +29,7 @@ func newCreateCommand() *cobra.Command {
 
 	flags.StringVarP(&certCN, "common-name", "n", "", "Certificate Common Name")
 	flags.StringVarP(&certAltNames, "alt-names", "a", "", "Certificate Alternative Names")
+	flags.IntVarP(&duration, "duration", "d", 12, "Certificate duration (in months)")
 
 	flags.StringVarP(&tsaURL, "tsa-url", "c", "", "TSA URL")
 	flags.StringVarP(&tsaToken, "token", "t", "", "Token")
@@ -188,7 +189,7 @@ func runCreate(cmd *cobra.Command, args []string) {
 	}
 
 	// Send CSR
-	cert, err := clt.GetCertificate(token, certtype, csr.Bytes, 12)
+	cert, err := clt.GetCertificate(token, certtype, csr.Bytes, duration)
 	if err != nil {
 		panic(err)
 	}
